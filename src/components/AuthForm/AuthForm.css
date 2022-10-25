@@ -1,0 +1,169 @@
+.authform {
+  max-width: 396px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.authform__title {
+  max-width: 100%;
+  margin: 40px 0;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  color: #FFFFFF;
+}
+
+.authform__form {
+  width: 396px;
+  max-width: 396px;
+  display: flex;
+  flex-direction: column;
+}
+
+.authform__title-input {
+  max-width: 100%;
+  margin: 0 0 10px;
+  padding: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #8B8B8B
+}
+
+.authform__input {
+  max-width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  border: 0;
+  background-color: #2F2F2F;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: #FFFFFF;
+  outline: none;
+}
+
+.authform__input_invalid {
+  color: #ff3055;
+}
+
+.authform__input-error {
+  max-width: 100%;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ff3055;
+  margin: 10px 0;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.authform__input-error_active {
+  opacity: 1;
+}
+
+.authform__submit-button {
+  max-width: 100%;
+  margin: 60px 0 0;
+  padding: 13px 0 15px;
+  border-radius: 3px;
+  border: 0;
+  background-color: #3456f3;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #ffffff;
+  transition: 0.4s;
+}
+
+.authform__submit-button_type_inactive {
+  color: #000000;
+  background-color: #e5e5e5;
+  pointer-events: none;
+  user-select: none;
+}
+
+.authform__submit-button:hover {
+  opacity: 0.8;
+}
+
+.authform__submit-button_place_login {
+  margin-top: 158px;
+}
+
+.authform__subtitle {
+  margin: 16px auto 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #a0a0a0;
+  align-self: center;
+}
+
+.authform__link {
+  color: #3456f3;
+  text-decoration: transparent;
+  transition: 0.4s;
+  padding-left: 7px;
+}
+
+.authform__link:hover {
+  opacity: 0.9;
+  text-decoration: underline rgba(52, 86, 243, 0.7);
+}
+
+@media all and (max-width: 768px) {
+  .authform__submit-button_place_login {
+    margin-top: 160px;
+  }
+}
+
+@media all and (max-width: 470px) {
+  .authform {
+    max-width: 260px;
+    align-items: center;
+  }
+
+  .authform__form {
+    max-width: 260px;
+    margin: 0 auto;
+  }
+
+  .authform__submit-button {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .authform__subtitle {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
+
+@media all and (max-width: 425px) {
+
+  .authform__title {
+    margin: 50px auto 80px;
+  }
+
+  .authform__submit-button {
+    margin-top: 147px;
+    padding-top: 15px;
+  }
+
+  .authform__subtitle {
+    margin-top: 14px;
+  }
+
+  .authform__submit-button_place_login {
+    margin-top: 248px;
+  }
+}

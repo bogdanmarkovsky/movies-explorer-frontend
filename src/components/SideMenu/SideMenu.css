@@ -1,0 +1,121 @@
+.sidemenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  visibility: hidden;
+  cursor: pointer;
+}
+
+.sidemenu_type_visible {
+  visibility: visible;
+  right: 0;
+}
+
+.sidemenu__container {
+  position: absolute;
+  top: 0;
+  right: -100%;
+  width: 67.7%;
+  height: 100%;
+  background-color: #202020;
+  display: flex;
+  flex-direction: column;
+  transition: 0.4s ease right;
+  cursor: auto;
+}
+
+.sidemenu__container_type_visible {
+  right: 0;
+}
+
+.sidemenu__link {
+  max-width: 340px;
+  padding-bottom: 4px;
+  margin: 0 auto 22px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: #FFFFFF;
+  transition: 0.4s ease right;
+  text-decoration: none;
+}
+
+.sidemenu__link:hover {
+  color: #2be080;
+}
+
+.sidemenu__link:first-child {
+  margin-top: 159px;
+}
+
+.sidemenu__link_place_current {
+  border-bottom: 2px solid #FFFFFF;
+}
+
+.sidemenu__link_place_current:hover {
+  border-color: #2be080;
+}
+
+.sidemenu__link-button {
+  margin-top: 595px;
+  width: 100px;
+  height: 32px;
+  border-radius: 20px;
+  background-image: url("../../images/profile.svg");
+  transition: 0.4s;
+}
+
+.sidemenu__link-button:hover {
+  background-color: #2BE080;
+}
+
+.sidemenu__close-button {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  background-image: url(../../images/cross.svg);
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 0;
+  cursor: pointer;
+}
+
+.sidemenu__close-button:hover {
+  opacity: 0.6;
+}
+
+@media all and (max-width: 425px) {
+  .sidemenu__container {
+    width: 100%;
+  }
+
+  .sidemenu__close-button {
+    top: 11px;
+    right: 6px;
+  }
+
+  .sidemenu__link {
+    max-width: 300px;
+    margin-bottom: 15px;
+    padding-bottom: 7px;
+  }
+
+  .sidemenu__link:first-child {
+    margin-top: 144px;
+  }
+
+  .sidemenu__link-button {
+    margin-top: 422px;
+  }
+}
