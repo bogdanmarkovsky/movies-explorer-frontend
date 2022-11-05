@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Movies.css';
 
-function Movies({ children }) {
+function Movies({ handleGetLocalStorageMovies, children }) {
+  useEffect(() => {
+    handleGetLocalStorageMovies();
+  }, []);
+
   return (
     <section className='movies'>
       {children}

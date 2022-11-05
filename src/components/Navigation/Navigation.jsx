@@ -2,12 +2,12 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Navigation.css';
 
-function Navigation({ isLoggedIn, handleSideMenuClick }) {
+function Navigation({ isLoggedIn, onClick }) {
   const location = useLocation();
 
   return (
     <nav className='navigation'>
-      {location.pathname === '/' ? (
+      {!isLoggedIn ? (
         <>
           <Link
             to="/signup"
@@ -40,14 +40,14 @@ function Navigation({ isLoggedIn, handleSideMenuClick }) {
             className="navigation__link-button"
           >
           </Link>
-          <button className='navigation__button' onClick={handleSideMenuClick}></button>
+          <button
+            className='navigation__button'
+            onClick={onClick}
+          />
         </>
-      )
-      }
+      )}
     </nav >
   );
 }
 
 export default Navigation;
-
-

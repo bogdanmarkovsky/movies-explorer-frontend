@@ -100,7 +100,7 @@
   margin-bottom: 15px;
   border: 0;
   cursor: pointer;
-  background-image: url(../../images/menu_burger.svg);
+  background-image: url(../../images/menu-burger.svg);
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 50%;
@@ -136,7 +136,7 @@
   }
 
   .navigation__button {
-    background-image: url(../../images/menu_burger-small.svg);
+    background-image: url(../../images/menu-burger-small.svg);
     width: 40px;
     height: 43px;
   }

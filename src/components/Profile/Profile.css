@@ -76,7 +76,6 @@
   font-size: 10px;
   line-height: 12px;
   color: #ff3055;
-  opacity: 0;
   transition: 0.4s;
   text-align: right;
 }
@@ -98,11 +97,12 @@
   transition: 0.4s;
 }
 
-.profile__form-submit-button_inactive {
+.profile__form-submit-button:disabled {
   pointer-events: none;
   user-select: none;
-  opacity: 0.6;
+  opacity: 0;
 }
+
 
 .profile__form-submit-button:hover {
   opacity: 1;

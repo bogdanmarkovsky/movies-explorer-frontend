@@ -5,7 +5,10 @@ import './AboutProject.css';
 function AboutProject() {
   return (
     <>
-      <SectionTitle title={"О проекте"} id={"about-project"} />
+      <SectionTitle
+        title={"О проекте"}
+        id={"about-project"}
+      />
       <section className="about-project">
         <ul className="about-project__list">
           <li className="about-project__list-item">
