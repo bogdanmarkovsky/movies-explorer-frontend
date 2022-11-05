@@ -1,5 +1,5 @@
 const mainApiUtils = {
-  serverUrl: "https://api.diploma43.nomoredomains.icu/",
+  serverUrl: "https://api.diploma43.nomoredomains.icu",
   headers: {
     "Accept": "application/json",
     "Content-Type": "application/json",

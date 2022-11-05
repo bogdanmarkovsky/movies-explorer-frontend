@@ -1,4 +1,4 @@
-export const serverUrl = "https://api.diploma43.nomoredomains.icu/";
+export const serverUrl = "https://api.diploma43.nomoredomains.icu";
 export const moviesApiUrl = 'https://api.nomoreparties.co';
 export const regExp = /^[а-яёa-z\-\s]+$/i;
 
