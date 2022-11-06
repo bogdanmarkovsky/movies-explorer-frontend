@@ -165,10 +165,13 @@ function App() {
         setSavedMovies([...savedMovies, newMovie]);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.name);
         setIsPopupSuccess(false);
         setPopupMessage(baseErrorMessage);
         setIsPopupOpen(true);
+        setIsLoggedIn(false);
+        navigate('/');
+        localStorage.clear();
       });
   }
 
@@ -180,10 +183,12 @@ function App() {
           item.movieId !== id));
       })
       .catch((err) => {
-        console.log(err);
         setIsPopupSuccess(false);
         setPopupMessage(baseErrorMessage);
         setIsPopupOpen(true);
+        setIsLoggedIn(false);
+        navigate('/');
+        localStorage.clear();
       });
   }
 
@@ -201,7 +206,6 @@ function App() {
         setPopupMessage(successUpdateProfileMessage);
       })
       .catch((err) => {
-        console.log(err);
         setIsPopupSuccess(false);
         if (err === 'Ошибка: 409') {
           return setPopupMessage(conflictErrorMessage);
@@ -239,7 +243,6 @@ function App() {
       })
       .catch((err) => {
         setFormError(credentialsErrorMessage);
-        console.log(err);
       });
   }
 
