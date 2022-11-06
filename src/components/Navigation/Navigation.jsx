@@ -25,19 +25,26 @@ function Navigation({ isLoggedIn, onClick }) {
         <>
           <Link
             to="/movies"
-            className={`navigation__link ${location.pathname === '/' ? 'navigation__link_place_main' : ''}`}
+            className={`navigation__link ${location.pathname === '/' ?
+              'navigation__link_place_main' :
+              location.pathname === '/movies' ?
+                'navigation__link_current' : ''}`}
           >
             Фильмы
           </Link>
           <Link
             to="/saved-movies"
-            className={`navigation__link navigation__link_font_regular ${location.pathname === '/' ? 'navigation__link_place_main' : ''}`}
+            className={`navigation__link navigation__link_font_regular ${location.pathname === '/' ?
+              'navigation__link_place_main' :
+              location.pathname === '/saved-movies' ?
+                'navigation__link_current' : ''}`}
           >
             Сохранённые фильмы
           </Link>
           <Link
             to="/profile"
-            className="navigation__link-button"
+            className={`navigation__link-button ${location.pathname === '/profile' ?
+              'navigation__link-button_current' : ''}`}
           >
           </Link>
           <button
