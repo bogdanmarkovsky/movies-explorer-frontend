@@ -25,7 +25,7 @@ import Popup from '../Popup/Popup';
 function App() {
   const [currentUser, setCurrentUser] = useState('');
   const [isSideMenuHidden, setIsSideMenuHidden] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn'));
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isPopupSuccess, setIsPopupSuccess] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
@@ -233,6 +233,7 @@ function App() {
       .then((res) => {
         setCurrentUser(res);
         setIsLoggedIn(true);
+        localStorage.setItem('isLoggedIn', true);
         handleGetSavedMovies();
         navigate('/movies');
       })
@@ -247,6 +248,7 @@ function App() {
       .getUserInfo()
       .then((res) => {
         setIsLoggedIn(true);
+        localStorage.setItem('isLoggedIn', true);
         setCurrentUser(res);
       })
       .catch(() => {
@@ -260,9 +262,7 @@ function App() {
       .then(() => {
         setIsLoggedIn(false);
         navigate('/');
-        localStorage.removeItem('movies');
-        localStorage.removeItem('searchText');
-        localStorage.removeItem('isShortMovies');
+        localStorage.clear();
       })
       .catch((err) => {
         console.log(err);
