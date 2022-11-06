@@ -35,7 +35,6 @@ function App() {
   const [foundMovies, setFoundMovies] = useState([]);
   const [notFoundMovies, setNotFoundMovies] = useState(false);
   const [isPreloaderActive, setIsPreloaderActive] = useState(false);
-  const [moviesAmount, setMoviesAmount] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -61,34 +60,6 @@ function App() {
       setIsSideMenuHidden(false);
     } else {
       setIsSideMenuHidden(true);
-    }
-  }
-
-  function handleStartMoviesAmount() {
-    let width = window.innerWidth;
-
-    if (width > 768) {
-      setMoviesAmount(12);
-    }
-
-    if (width <= 768) {
-      setMoviesAmount(8);
-    }
-
-    if (width <= 480) {
-      setMoviesAmount(5);
-    }
-  }
-
-  function handleMoviesAmount() {
-    let width = window.innerWidth;
-
-    if (width > 768) {
-      setMoviesAmount(moviesAmount + 3);
-    }
-
-    if (width <= 768) {
-      setMoviesAmount(moviesAmount + 2);
     }
   }
 
@@ -284,10 +255,6 @@ function App() {
     handleCheckToken();
   }, []);
 
-  useEffect(() => {
-    handleStartMoviesAmount();
-  }, [foundMovies])
-
   return (
     <div className="app">
       <CurrentUserContext.Provider value={currentUser}>
@@ -334,8 +301,6 @@ function App() {
                     handleMoviesSearch={handleMoviesSearch}
                   />
                   <MoviesCardList
-                    moviesAmount={moviesAmount}
-                    handleMoviesAmount={handleMoviesAmount}
                     isPreloaderActive={isPreloaderActive}
                     foundMovies={foundMovies}
                     notFoundMovies={notFoundMovies}
@@ -358,8 +323,6 @@ function App() {
                     handleMoviesSearch={handleMoviesSearch}
                   />
                   <MoviesCardList
-                    moviesAmount={moviesAmount}
-                    handleMoviesAmount={handleMoviesAmount}
                     isPreloaderActive={isPreloaderActive}
                     foundMovies={foundMovies}
                     notFoundMovies={notFoundMovies}
