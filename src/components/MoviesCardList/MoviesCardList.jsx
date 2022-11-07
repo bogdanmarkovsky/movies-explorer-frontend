@@ -64,7 +64,7 @@ function MoviesCardList({
             onClick={handleCountMovies}
           >
             Ещё
-          </button>z
+          </button>
         </div>
       )
     }
