@@ -136,13 +136,14 @@ function App() {
         setSavedMovies([...savedMovies, newMovie]);
       })
       .catch((err) => {
-        console.log(err.name);
         setIsPopupSuccess(false);
         setPopupMessage(baseErrorMessage);
         setIsPopupOpen(true);
-        setIsLoggedIn(false);
-        navigate('/');
-        localStorage.clear();
+        if (err === 'Ошибка: 401') {
+          setIsLoggedIn(false);
+          navigate('/');
+          localStorage.clear();
+        }
       });
   }
 
@@ -157,9 +158,11 @@ function App() {
         setIsPopupSuccess(false);
         setPopupMessage(baseErrorMessage);
         setIsPopupOpen(true);
-        setIsLoggedIn(false);
-        navigate('/');
-        localStorage.clear();
+        if (err === 'Ошибка: 401') {
+          setIsLoggedIn(false);
+          navigate('/');
+          localStorage.clear();
+        }
       });
   }
 
