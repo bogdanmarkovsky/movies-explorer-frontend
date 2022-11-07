@@ -294,7 +294,10 @@ function App() {
             path='/movies'
             element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
-                <Movies handleGetLocalStorageMovies={handleGetLocalStorageMovies}>
+                <Movies
+                  handleGetLocalStorageMovies={handleGetLocalStorageMovies}
+                  handleGetSavedMovies={handleGetSavedMovies}
+                >
                   <SearchForm
                     movies={movies}
                     handleGetMovies={handleGetMovies}

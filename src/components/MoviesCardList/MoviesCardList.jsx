@@ -74,6 +74,10 @@ function MoviesCardList({
     }
   }, [screenWidth]);
 
+  useEffect(() => {
+    generateCardsList();
+  }, []);
+
   return (
     <div className='movies-cardlist'>
       <div className={`movies-cardlist__container ${(isPreloaderActive || notFoundMovies) && 'movies-cardlist__container_type_preload'}`}>

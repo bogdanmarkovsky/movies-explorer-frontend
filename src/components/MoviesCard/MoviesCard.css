@@ -59,22 +59,11 @@
   background-image: url("../../images/save-icon.svg");
   border-radius: 50px;
   border: 0;
-  -ms-appearance: none;
-  appearance: none;
   cursor: pointer;
+  background-color: transparent;
 }
 
-.card__checkbox::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 30px;
-  height: 30px;
-}
-
-.card__checkbox:checked::before {
-  visibility: visible;
+.card__checkbox_active {
   background-image: url("../../images/save-icon-active.svg");
 }
 

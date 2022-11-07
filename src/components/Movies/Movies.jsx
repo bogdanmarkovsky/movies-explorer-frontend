@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import './Movies.css';
 
-function Movies({ handleGetLocalStorageMovies, children }) {
+function Movies({ handleGetLocalStorageMovies, handleGetSavedMovies, children }) {
   useEffect(() => {
     handleGetLocalStorageMovies();
+    handleGetSavedMovies();
   }, []);
 
   return (

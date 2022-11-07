@@ -40,14 +40,6 @@ function MoviesCard({ movie, onSave, onDelete, isChecked }) {
     });
   }
 
-  function handleSaveButton(evt) {
-    if (evt.target.checked) {
-      addMovieToSaved();
-    } else {
-      deleteMovieFromSaved();
-    }
-  }
-
   return (
     <div className="card">
       <a
@@ -66,14 +58,16 @@ function MoviesCard({ movie, onSave, onDelete, isChecked }) {
         <h3 className="card__title">{movie.nameRU}</h3>
         <p className="card__duration">{minutesToHours(movie.duration)}</p>
         {location.pathname === "/movies" ?
-          (
-            <input
-              type="checkbox"
-              className="card__checkbox"
-              onChange={handleSaveButton}
-              defaultChecked={isChecked && true}
-            />
-          ) :
+          <button
+            className={`card__checkbox ${isChecked && 'card__checkbox_active'}`
+            }
+            type='button'
+            onClick={isChecked ?
+              deleteMovieFromSaved :
+              addMovieToSaved
+            }
+          />
+          :
           (
             <button
               className="card__button"
