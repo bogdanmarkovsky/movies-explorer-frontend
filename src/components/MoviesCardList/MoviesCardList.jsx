@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useCallback } from 'react';
+import { React, useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard.jsx';
 import Preloader from '../Preloader/Preloader';
 import { useScreenWidth } from '../../utils/UseScreenWidth';
@@ -43,7 +43,7 @@ function MoviesCardList({
       setMoviesAmount(moviesAmount + 2);
     }
     if (screenWidth < 648) {
-      setMoviesAmount(moviesAmount + 5);
+      setMoviesAmount(moviesAmount + 2);
     }
   }
 
@@ -56,7 +56,7 @@ function MoviesCardList({
             onClick={handleCountMovies}
           >
             Ещё
-          </button>
+          </button>z
         </div>
       )
     }
