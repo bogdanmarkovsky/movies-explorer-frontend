@@ -2,6 +2,14 @@ import { React, useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard.jsx';
 import Preloader from '../Preloader/Preloader';
 import { useScreenWidth } from '../../utils/UseScreenWidth';
+import { screenSizeL } from '../../utils/constants.js';
+import { screenSizeM } from '../../utils/constants.js';
+import { moviesAmountScreenSizeL } from '../../utils/constants.js';
+import { moviesAmountScreenSizeM } from '../../utils/constants.js';
+import { moviesAmountScreenSizeS } from '../../utils/constants.js';
+import { additionalMoviesAmountSizeL } from '../../utils/constants.js';
+import { additionalMoviesAmountSizesM } from '../../utils/constants.js';
+import { additionalMoviesAmountSizesS } from '../../utils/constants.js';
 import './MoviesCardList.css';
 
 function MoviesCardList({
@@ -36,14 +44,14 @@ function MoviesCardList({
   }
 
   function handleCountMovies() {
-    if (screenWidth >= 998) {
-      setMoviesAmount(moviesAmount + 3);
+    if (screenWidth >= screenSizeL) {
+      setMoviesAmount(moviesAmount + additionalMoviesAmountSizeL);
     }
-    if (screenWidth < 998) {
-      setMoviesAmount(moviesAmount + 2);
+    if (screenWidth < screenSizeL) {
+      setMoviesAmount(moviesAmount + additionalMoviesAmountSizesM);
     }
-    if (screenWidth < 648) {
-      setMoviesAmount(moviesAmount + 2);
+    if (screenWidth < screenSizeM) {
+      setMoviesAmount(moviesAmount + additionalMoviesAmountSizesS);
     }
   }
 
@@ -63,14 +71,14 @@ function MoviesCardList({
   }
 
   useEffect(() => {
-    if (screenWidth >= 998) {
-      setMoviesAmount(12);
+    if (screenWidth >= screenSizeL) {
+      setMoviesAmount(moviesAmountScreenSizeL);
     }
-    if (screenWidth < 998) {
-      setMoviesAmount(8);
+    if (screenWidth < screenSizeL) {
+      setMoviesAmount(moviesAmountScreenSizeM);
     }
-    if (screenWidth < 648) {
-      setMoviesAmount(5);
+    if (screenWidth < screenSizeM) {
+      setMoviesAmount(moviesAmountScreenSizeS);
     }
   }, [screenWidth]);
 

@@ -19,6 +19,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 import { mainApi } from '../../utils/MainApi';
 import { moviesApi } from '../../utils/MoviesApi';
+import { shortListDuration } from '../../utils/constants';
 import { baseErrorMessage, successUpdateProfileMessage, conflictErrorMessage, credentialsErrorMessage } from '../../utils/messages';
 import Popup from '../Popup/Popup';
 
@@ -78,7 +79,7 @@ function App() {
     }
     if (isShort) {
       let shortMoviesList = moviesList.filter((item) =>
-        item.duration <= 40);
+        item.duration <= shortListDuration);
       if (shortMoviesList.length === 0) {
         return setNotFoundMovies(true);
       }
