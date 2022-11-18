@@ -5,7 +5,10 @@ import './Techs.css';
 function Techs() {
   return (
     <>
-      <SectionTitle title={"Технологии"} id={"technologies"} />
+      <SectionTitle
+        title={"Технологии"}
+        id={"technologies"}
+      />
       <section className="techs">
         <h3 className="techs__title">7 технологий</h3>
         <p className="techs__text">

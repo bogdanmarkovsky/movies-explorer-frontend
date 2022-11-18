@@ -1,12 +1,15 @@
 import React from "react";
 import SectionTitle from '../SectionTitle/SectionTitle';
-import ava from "../../images/ava.jpg";
+import avatar from "../../images/avatar.jpg";
 import './AboutMe.css';
 
 function AboutMe() {
   return (
     <>
-      <SectionTitle title={"Cтудент"} id={"student"} />
+      <SectionTitle
+        title={"Cтудент"}
+        id={"student"}
+      />
       <section className="aboutme">
         <div className="aboutme__info">
           <div className="aboutme__text-container">
@@ -26,7 +29,11 @@ function AboutMe() {
             Github
           </a>
         </div>
-        <img className="aboutme__avatar" src={ava} alt="ава"></img>
+        <img
+          className="aboutme__avatar"
+          src={avatar}
+          alt="аватар"
+        />
       </section>
     </>
   );

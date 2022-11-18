@@ -1,16 +1,44 @@
 import React from 'react';
+import { useState } from 'react';
 import AuthForm from '../AuthForm/AuthForm';
+import { Validator } from '../Validator/Validator';
 
-function Register() {
+function Register({ onRegister, error }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  let validator = Validator({ name: '', email: '', password: '' });
+
+  function handleChangeRegisterFields(evt) {
+    validator.handleChange(evt);
+    if (evt.target.name === 'name') {
+      setName(evt.target.value)
+    }
+    if (evt.target.name === 'email') {
+      setEmail(evt.target.value)
+    }
+    if (evt.target.name === 'password') {
+      setPassword(evt.target.value);
+    }
+  }
+
+  function handleRegisterButton(evt) {
+    evt.preventDefault();
+    onRegister(name, email, password);
+    validator.resetForm();
+  }
 
   return (
     <AuthForm
-      name='register'
-      title='Добро пожаловать!'
+      formName='register'
+      formTitle='Добро пожаловать!'
       buttonText='Зарегистрироваться'
-      subtitle='Уже зарегистрированы?'
+      formSubtitle='Уже зарегистрированы?'
       link='/signin'
       linkText='Войти'
+      onSubmit={handleRegisterButton}
+      errorText={error}
+      validity={validator.isValid}
     >
       <label
         className='authform__title-input'
@@ -19,20 +47,23 @@ function Register() {
         Имя
       </label>
       <input
+        value={name}
+        onChange={handleChangeRegisterFields}
+        className={`authform__input ${validator.errors.name && 'authform__input_invalid'}`}
         type='text'
-        className='authform__input'
         id='register-name-input'
         name='name'
         placeholder='Введите имя'
         minLength='2'
         maxLength='30'
         required
-        defaultValue='Богдан'
       />
       <span
         className='authform__input-error'
         id='register-name-input-error'
-      />
+      >
+        {validator.errors.name}
+      </span>
       <label
         className='authform__title-input'
         htmlFor='register-email-input'
@@ -40,19 +71,21 @@ function Register() {
         E-mail
       </label>
       <input
+        value={email}
+        onChange={handleChangeRegisterFields}
+        className={`authform__input ${validator.errors.email && 'authform__input_invalid'}`}
         type='email'
-        className='authform__input'
-        id='register-email-input'
+        id='login-email-input'
         name='email'
-        placeholder='Введите адрес электронной почты'
+        placeholder='Введите email'
         required
-        defaultValue='pochta@yandex.ru'
-
       />
       <span
         className='authform__input-error'
         id='register-email-input-error'
-      />
+      >
+        {validator.errors.email}
+      </span>
       <label
         className='authform__title-input'
         htmlFor='register-password-input'
@@ -60,19 +93,20 @@ function Register() {
         Пароль
       </label>
       <input
+        value={password}
+        onChange={handleChangeRegisterFields}
+        className={`authform__input ${validator.errors.password && 'authform__input_invalid'}`}
         type='password'
-        className='authform__input authform__input_invalid'
-        id='register-password-input'
+        id='login-password-input'
         name='password'
         placeholder='Введите пароль'
         required
-        defaultValue='1234568721'
       />
       <span
-        className='authform__input-error authform__input-error_active'
+        className='authform__input-error'
         id='register-password-input-error'
       >
-        Что-то пошло не так...
+        {validator.errors.password}
       </span>
     </AuthForm>
   );

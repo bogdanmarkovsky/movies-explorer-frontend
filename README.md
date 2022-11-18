@@ -1,3 +1,5 @@
-ссылка на макет в Figma
+ссылка на пулреквест
+https://github.com/bogdanmarkovsky/movies-explorer-frontend/pull/2
 
-https://disk.yandex.ru/d/5WJIpbgTJeNP-g
+ссылка на хостинг
+https://diploma43.nomoredomains.icu

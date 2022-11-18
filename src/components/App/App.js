@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import Header from '../Header/Header';
 import Register from '../Register/Register';
@@ -10,28 +10,53 @@ import SearchForm from '../SearchForm/SearchForm';
 import NotFound from '../NotFound/NotFound';
 import Navigation from '../Navigation/Navigation';
 import SideMenu from '../SideMenu/SideMenu';
-import MoviesCardList from '../MovieCardList/MoviesCardList';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Movies from '../Movies/Movies';
-import Preloader from '../Preloader/Preloader';
 import Footer from '../Footer/Footer';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+
+import { CurrentUserContext } from '../../context/CurrentUserContext';
+import { mainApi } from '../../utils/MainApi';
+import { moviesApi } from '../../utils/MoviesApi';
+import { shortListDuration } from '../../utils/constants';
+import { baseErrorMessage, successUpdateProfileMessage, conflictErrorMessage, credentialsErrorMessage } from '../../utils/messages';
+import Popup from '../Popup/Popup';
 
 function App() {
-  const location = useLocation();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [currentUser, setCurrentUser] = useState('');
   const [isSideMenuHidden, setIsSideMenuHidden] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn'));
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupSuccess, setIsPopupSuccess] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [formError, setFormError] = useState('');
+  const [movies, setMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [foundMovies, setFoundMovies] = useState([]);
+  const [notFoundMovies, setNotFoundMovies] = useState(false);
+  const [isPreloaderActive, setIsPreloaderActive] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  function closePopup() {
+    setIsPopupOpen(false);
+  }
 
   function closeSideMenu() {
     setIsSideMenuHidden(true);
   }
 
-  function handleCloseOnOverlay(evt) {
+  function handleCloseByOverlayClick(evt) {
     if (evt.target.classList.contains('sidemenu')) {
       closeSideMenu();
     }
+    if (evt.target.classList.contains('popup')) {
+      closePopup();
+    }
   }
 
-  function handleSideMenuClick() {
+  function handleSideMenuButtonClick() {
     if (isSideMenuHidden) {
       setIsSideMenuHidden(false);
     } else {
@@ -39,56 +64,310 @@ function App() {
     }
   }
 
+  const handleMoviesSearch = (value, isShort, movies) => {
+    setNotFoundMovies(false);
+    if (location.pathname === '/movies') {
+      const text = localStorage.getItem('searchText');
+      if (!text) {
+        return setFoundMovies([]);
+      }
+    }
+    let moviesList = movies.filter((item) =>
+      item.nameRU.toLowerCase().includes(value.toLowerCase()));
+    if (moviesList.length === 0) {
+      return setNotFoundMovies(true);
+    }
+    if (isShort) {
+      let shortMoviesList = moviesList.filter((item) =>
+        item.duration <= shortListDuration);
+      if (shortMoviesList.length === 0) {
+        return setNotFoundMovies(true);
+      }
+      return setFoundMovies(shortMoviesList);
+    }
+    return setFoundMovies(moviesList);
+  }
+
+  function handleGetSavedMovies() {
+    if (isLoggedIn) {
+      mainApi
+        .getMoviesFromSaved()
+        .then((movies) => {
+          setSavedMovies(movies);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsPopupSuccess(false);
+          setPopupMessage(baseErrorMessage);
+          setIsPopupOpen(true);
+        })
+    }
+  }
+
+  function handleGetMovies() {
+    setIsPreloaderActive(true);
+    moviesApi
+      .getMoviesFromServer()
+      .then((movies) => {
+        setMovies(movies);
+        localStorage.setItem('movies', JSON.stringify(movies));
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsPopupSuccess(false);
+        setPopupMessage(baseErrorMessage);
+        setIsPopupOpen(true);
+      })
+      .finally(() => {
+        setIsPreloaderActive(false);
+      })
+  }
+
+  function handleGetLocalStorageMovies() {
+    const movies = JSON.parse(localStorage.getItem('movies'));
+    if (movies) {
+      setMovies(movies);
+    }
+  }
+
+  function handleAddMovieToSaved(movie) {
+    mainApi
+      .addMovieToSaved(movie)
+      .then((newMovie) => {
+        setSavedMovies([...savedMovies, newMovie]);
+      })
+      .catch((err) => {
+        setIsPopupSuccess(false);
+        setPopupMessage(baseErrorMessage);
+        setIsPopupOpen(true);
+        if (err === 'Ошибка: 401') {
+          setIsLoggedIn(false);
+          navigate('/');
+          localStorage.clear();
+        }
+      });
+  }
+
+  function handleDeleteMovieFromSaved(id) {
+    mainApi
+      .deleteMovieFromSaved(id)
+      .then(() => {
+        setSavedMovies(savedMovies.filter((item) =>
+          item.movieId !== id));
+      })
+      .catch((err) => {
+        setIsPopupSuccess(false);
+        setPopupMessage(baseErrorMessage);
+        setIsPopupOpen(true);
+        if (err === 'Ошибка: 401') {
+          setIsLoggedIn(false);
+          navigate('/');
+          localStorage.clear();
+        }
+      });
+  }
+
+  function handleFindMovieInSaved(currentMovie) {
+    return savedMovies.some((movie) =>
+      movie.movieId === currentMovie.id);
+  }
+
+  function handleUpdateUserInfo(name, email) {
+    mainApi
+      .editUserInfo(name, email)
+      .then((res) => {
+        setCurrentUser(res);
+        setIsPopupSuccess(true);
+        setPopupMessage(successUpdateProfileMessage);
+      })
+      .catch((err) => {
+        setIsPopupSuccess(false);
+        if (err === 'Ошибка: 409') {
+          return setPopupMessage(conflictErrorMessage);
+        }
+        setPopupMessage(baseErrorMessage);
+      })
+      .finally(() => {
+        setIsPopupOpen(true);
+      })
+  }
+
+  function handleRegister(name, email, password) {
+    mainApi
+      .register(name, password, email)
+      .then(() => {
+        handleLogin(email, password);
+      })
+      .catch((err) => {
+        if (err === 'Ошибка: 409') {
+          return setFormError(conflictErrorMessage);
+        }
+        setFormError(baseErrorMessage);
+      })
+  }
+
+  function handleLogin(email, password) {
+    mainApi
+      .login(email, password)
+      .then((res) => {
+        setCurrentUser(res);
+        setIsLoggedIn(true);
+        localStorage.setItem('isLoggedIn', true);
+        handleGetSavedMovies();
+        navigate('/movies');
+      })
+      .catch((err) => {
+        setFormError(credentialsErrorMessage);
+      });
+  }
+
+  function handleCheckToken() {
+    mainApi
+      .getUserInfo()
+      .then((res) => {
+        setIsLoggedIn(true);
+        localStorage.setItem('isLoggedIn', true);
+        setCurrentUser(res);
+      })
+      .catch(() => {
+        setIsLoggedIn(false);
+      });
+  }
+
+  function handleLogout() {
+    mainApi
+      .logout()
+      .then(() => {
+        setIsLoggedIn(false);
+        navigate('/');
+        localStorage.clear();
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsPopupSuccess(false);
+        setPopupMessage(baseErrorMessage);
+        setIsPopupOpen(true);
+      });
+  }
 
   useEffect(() => {
     setIsSideMenuHidden(true);
+    setFormError('');
   }, [location.pathname]);
+
+  useEffect(() => {
+    handleCheckToken();
+  }, []);
 
   return (
     <div className="app">
-      <Header>
-        <Navigation
-          isLoggedIn={isLoggedIn}
-          handleSideMenuClick={handleSideMenuClick}
+      <CurrentUserContext.Provider value={currentUser}>
+        <Header>
+          <Navigation
+            isLoggedIn={isLoggedIn}
+            onClick={handleSideMenuButtonClick}
+          />
+        </Header>
+        <Routes>
+          <Route
+            path='/signup'
+            element={isLoggedIn ?
+              <Navigate to='/movies' /> :
+              <Register
+                onRegister={handleRegister}
+                error={formError}
+              />
+            }
+          />
+          <Route
+            path='/signin'
+            element={isLoggedIn === true ?
+              <Navigate to='/movies' /> :
+              <Login
+                onLogin={handleLogin}
+                error={formError}
+              />
+            }
+          />
+          <Route
+            path='/'
+            element={<Main />}
+            exact
+          />
+          <Route
+            path='/movies'
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Movies
+                  handleGetLocalStorageMovies={handleGetLocalStorageMovies}
+                  handleGetSavedMovies={handleGetSavedMovies}
+                >
+                  <SearchForm
+                    movies={movies}
+                    handleGetMovies={handleGetMovies}
+                    handleMoviesSearch={handleMoviesSearch}
+                  />
+                  <MoviesCardList
+                    isPreloaderActive={isPreloaderActive}
+                    foundMovies={foundMovies}
+                    notFoundMovies={notFoundMovies}
+                    handleFindMovieInSaved={handleFindMovieInSaved}
+                    handleAddMovieToSaved={handleAddMovieToSaved}
+                    handleDeleteMovieFromSaved={handleDeleteMovieFromSaved}
+                  />
+                </Movies>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/saved-movies'
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <SavedMovies handleGetSavedMovies={handleGetSavedMovies}>
+                  <SearchForm
+                    movies={savedMovies}
+                    handleGetMovies={handleGetMovies}
+                    handleMoviesSearch={handleMoviesSearch}
+                  />
+                  <MoviesCardList
+                    isPreloaderActive={isPreloaderActive}
+                    foundMovies={foundMovies}
+                    notFoundMovies={notFoundMovies}
+                    handleFindMovieInSaved={handleFindMovieInSaved}
+                    handleAddMovieToSaved={handleAddMovieToSaved}
+                    handleDeleteMovieFromSaved={handleDeleteMovieFromSaved}
+                  />
+                </SavedMovies>
+              </ProtectedRoute>
+            } />
+          <Route
+            path='/profile'
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Profile
+                  onUpdate={handleUpdateUserInfo}
+                  onLogout={handleLogout}
+                />
+              </ProtectedRoute>
+            } />
+          <Route
+            path='*'
+            element={<NotFound />}
+          />
+        </Routes>
+        <Footer />
+        <SideMenu
+          isHidden={isSideMenuHidden}
+          onClose={handleSideMenuButtonClick}
+          onClickOnOverlay={handleCloseByOverlayClick}
         />
-      </Header>
-      <Switch>
-        <Route path="/signup">
-          <Register />
-        </Route>
-        <Route path="/signin">
-          <Login />
-        </Route>
-        <Route path="/" exact>
-          <Main />
-        </Route>
-        <Route path="/movies">
-          <Movies>
-            <SearchForm />
-            <MoviesCardList />
-            <Preloader />
-          </Movies>
-        </Route>
-        <Route path="/saved-movies">
-          <SavedMovies>
-            <SearchForm />
-            <MoviesCardList />
-            <Preloader />
-          </SavedMovies>
-        </Route>
-        <Route path="/profile">
-          <Profile />
-        </Route>
-        <Route path="*">
-          <NotFound />
-        </Route>
-      </Switch>
-      <Footer />
-      <SideMenu
-        isSideMenuHidden={isSideMenuHidden}
-        handleSideMenuClick={handleSideMenuClick}
-        handleCloseOnOverlay={handleCloseOnOverlay}
-      />
+        <Popup
+          status={isPopupSuccess}
+          popupMessage={popupMessage}
+          isOpen={isPopupOpen}
+          onClose={closePopup}
+          onClickOnOverlay={handleCloseByOverlayClick} />
+      </CurrentUserContext.Provider>
     </div>
   );
 }

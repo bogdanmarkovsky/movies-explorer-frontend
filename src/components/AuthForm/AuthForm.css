@@ -60,8 +60,18 @@
   line-height: 12px;
   color: #ff3055;
   margin: 10px 0;
-  opacity: 0;
   transition: 0.4s;
+}
+
+.authform__error-message {
+  max-width: 100%;
+  text-align: center;
+  color: #ff3055;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  padding: 0;
+  margin: 49px 0 10px;
 }
 
 .authform__input-error_active {
@@ -83,15 +93,18 @@
   transition: 0.4s;
 }
 
-.authform__submit-button_type_inactive {
-  color: #000000;
-  background-color: #e5e5e5;
+.authform__submit-button:disabled {
+  opacity: 0;
   pointer-events: none;
   user-select: none;
 }
 
 .authform__submit-button:hover {
   opacity: 0.8;
+}
+
+.authform__error-message_place_login {
+  margin: 137px 0 10px;
 }
 
 .authform__submit-button_place_login {
@@ -124,6 +137,14 @@
   .authform__submit-button_place_login {
     margin-top: 160px;
   }
+
+  .authform__error-message {
+    margin: 109px 0 10px;
+  }
+
+  .authform__error-message_place_login {
+    margin: 137px 0 10px;
+  }
 }
 
 @media all and (max-width: 470px) {
@@ -154,6 +175,10 @@
     margin: 50px auto 80px;
   }
 
+  .authform__error-message {
+    margin: 137px 0 10px;
+  }
+
   .authform__submit-button {
     margin-top: 147px;
     padding-top: 15px;
@@ -165,5 +190,9 @@
 
   .authform__submit-button_place_login {
     margin-top: 248px;
+  }
+
+  .authform__error-message_place_login {
+    margin: 225px 0 10px;
   }
 }

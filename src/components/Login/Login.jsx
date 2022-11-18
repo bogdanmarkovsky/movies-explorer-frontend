@@ -1,16 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AuthForm from '../AuthForm/AuthForm';
+import { Validator } from '../Validator/Validator';
 
-function Login() {
+function Login({ onLogin, error }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  let validator = Validator({ email: '', password: '' });
+
+  function handleChangeLoginFields(evt) {
+    validator.handleChange(evt);
+    if (evt.target.name === 'email') {
+      setEmail(evt.target.value)
+    }
+    if (evt.target.name === 'password') {
+      setPassword(evt.target.value);
+    }
+  }
+
+  function handleLoginButton(evt) {
+    evt.preventDefault();
+    onLogin(email, password);
+    validator.resetForm();
+  }
 
   return (
     <AuthForm
-      name='login'
-      title='Рады видеть!'
+      formName='login'
+      formTitle='Рады видеть!'
       buttonText='Войти'
-      subtitle='Ещё не зарегистрированы?'
+      formSubtitle='Ещё не зарегистрированы?'
       link='/signup'
       linkText='Регистрация'
+      onSubmit={handleLoginButton}
+      errorText={error}
+      validity={validator.isValid}
     >
       <label
         className='authform__title-input'
@@ -19,18 +42,21 @@ function Login() {
         E-mail
       </label>
       <input
+        value={email}
+        onChange={handleChangeLoginFields}
+        className={`authform__input ${validator.errors.email && 'authform__input_invalid'}`}
         type='email'
-        className='authform__input'
         id='login-email-input'
         name='email'
-        placeholder='Введите имя'
+        placeholder='Введите email'
         required
-        defaultValue='pochta@yandex.ru'
       />
       <span
         className='authform__input-error'
         id='login-email-input-error'
-      />
+      >
+        {validator.errors.email}
+      </span>
       <label
         className='authform__title-input'
         htmlFor='login-password-input'
@@ -38,8 +64,10 @@ function Login() {
         Пароль
       </label>
       <input
+        value={password}
+        onChange={handleChangeLoginFields}
+        className={`authform__input ${validator.errors.password && 'authform__input_invalid'}`}
         type='password'
-        className='authform__input'
         id='login-password-input'
         name='password'
         placeholder='Введите пароль'
@@ -48,7 +76,9 @@ function Login() {
       <span
         className='authform__input-error'
         id='login-password-input-error'
-      />
+      >
+        {validator.errors.password}
+      </span>
     </AuthForm>
   );
 }

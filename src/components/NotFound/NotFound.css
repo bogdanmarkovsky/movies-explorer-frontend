@@ -30,6 +30,9 @@
 }
 
 .not-found-page__link {
+  cursor: pointer;
+  background: transparent;
+  border: none;
   margin: 0;
   padding: 0;
   padding-top: 184px;
@@ -39,6 +42,10 @@
   line-height: 17px;
   color: #4285F4;
   text-decoration: none;
+}
+
+.not-found-page__link:hover {
+  opacity: 0.6;
 }
 
 @media all and (max-width: 767px) {

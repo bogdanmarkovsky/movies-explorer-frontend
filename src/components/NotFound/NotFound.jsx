@@ -3,16 +3,21 @@ import { Link } from 'react-router-dom';
 import './NotFound.css';
 
 function NotFound() {
+
+  function goBack() {
+    window.history.back();
+  }
   return (
     <div className="not-found-page">
       <p className="not-found-page__error-code">404</p>
       <p className="not-found-page__error-text">Страница не найдена</p>
-      <Link
+      <button
+        type='button'
         className="not-found-page__link"
-        to="/"
+        onClick={goBack}
       >
         Назад
-      </Link>
+      </button>
     </div>
   );
 }

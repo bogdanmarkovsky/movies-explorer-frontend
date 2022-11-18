@@ -8,12 +8,22 @@
 
 .search__form {
   width: 100%;
-  margin: 70px auto 31px;
+  margin: 70px auto 5px;
   display: grid;
   gap: 10px;
   grid-template-columns: 1fr 70px;
   border-radius: 5px;
   box-sizing: border-box;
+}
+
+.search__input-error {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #EE3465;
+  display: block;
+  height: 27px;
 }
 
 .search__form-input {
@@ -72,7 +82,7 @@
 
   .search__form {
     grid-template-columns: 1fr 70px;
-    margin-bottom: 42px;
+    margin-bottom: 5px;
   }
 
   .search__form-input {
@@ -86,5 +96,9 @@
     padding: 13px 0;
     font-size: 12px;
     line-height: 18px;
+  }
+
+  .search__input-error {
+    height: 37px;
   }
 }
